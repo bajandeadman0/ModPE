@@ -11,7 +11,7 @@ function useItem(x, y, z, itemId, blockId, side)
 if(itemId==264)  
 {  
 preventDefault();  
-herobrine = (bl_spawnMob(x-10, y+3, z, 32, "mob/Herobrine.png"));     
+herobrine = (Level.spawnMob(x-10, y+3, z, 32, "mob/Herobrine.png"));     
  herobrine;
                  Entity.setHealth(herobrine, 200);
                  Entity.setRenderType(herobrine,3);          clientMessage("[HM] Herobrine has spawned"); 
@@ -28,3 +28,4 @@ clientMessage("[HM] Do not distribute");
 clientMessage("[HM] Tap a diamond somewhere ");
 clientMessage("[HM] To spawn Herobrine");
 }
+
