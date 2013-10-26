@@ -1,4 +1,4 @@
-//Youtubers Fighting Simulator 
+/Youtubers Fighting Simulator 
 //The Clones mod
 //Made by Bajan_Deadman0
  //© Copyright 2013 Bajan_Deadman0
@@ -13,70 +13,119 @@
             clientMessage("[YFS] Youtuber does not exist | not included | wrong spelling. Type /help for information!");
             break;
         } 
+        case 'killall': {
+        Entity.setHealth(bajan,0);
+         Entity.setHealth(bashur,0);
+         Entity.setHealth(bowmaster,0);
+         Entity.setHealth(sky,0);
+         Entity.setHealth(deadlox,0);
+         Entity.setHealth(husky,0);
+         Entity.setHealth(bodil,0);
+         Entity.setHealth(noah,0);
+         Entity.setHealth(ian,0);
+         Entity.setHealth(kermit,0);
+         Entity.setHealth(seth,0);
+         Entity.setHealth(bat,0);
+         Entity.setHealth(mu,0);
+         Entity.setHealth(me,0);
+         Entity.setHealth(captain,0);
+         Entity.setHealth(bacca,0);
+         Entity.setHealth(lavamob,0);
+         Entity.setHealth(dawn,0);
+         Entity.setHealth(cupquake,0);
+         Entity.setHealth(harry,0);
+         Entity.setHealth(jerry,0); 
+         Entity.setHealth(pocket,0);
+         Entity.setHealth(rush,0);
+         Entity.setHealth(vikk,0);
+         Entity.setHealth(notch,0);
+          clientMessage("[YFS] Every Youtuber has been killed");
+         break;
+         }
+        case 'superweapon': {
+        Player.addItemInventory(268,1,-30000);
+        clientMessage("[YFS] Superweapon has been given");
+            break;
+        }
          case 'list': {
-                 clientMessage("[YFS] Type /NameOfYoutuber to spawn a youtuber"); 
-                    clientMessage("[YFS] [LIST] Youtubers List 1 of 6");
+            switch(p[1]) { 
+            default: {
+         clientMessage("[YFS] Type /NameOfYoutuber to spawn a youtuber"); 
+                    clientMessage("[YFS] [LIST] Youtubers List 1 of 7");
 clientMessage("BajanCanadian");
  clientMessage("Bajan_Deadman0"); 
 clientMessage("Bashur");
 clientMessage("Bodil40");
- 
  break; 
-        }
-         case 'list1': {
+        } 
+          
+         case '1':{
                  clientMessage("[YFS] Type /NameOfYoutuber to spawn a youtuber"); 
-                    clientMessage("[YFS] [LIST] Youtubers List 1 of 6");
+                    clientMessage("[YFS] [LIST] Youtubers List 1 of 7");
 clientMessage("BajanCanadian");
-clientMessage("Bajan_Deadman0");
+ clientMessage("Bajan_Deadman0"); 
 clientMessage("Bashur");
 clientMessage("Bodil40");
  break; 
         } 
- case 'list2': {
+   case '2' : {
                  clientMessage("[YFS] Type /NameOfYoutuber to spawn a youtuber"); 
-                    clientMessage("[YFS] [LIST] Youtubers List 2 of 6");
+                    clientMessage("[YFS] [LIST] Youtubers List 2 of 7");
                      clientMessage("BowMaster (BajanCanadian with bow)"); 
 clientMessage("CaptainSparklez")
 clientMessage("dawnables")
 clientMessage("deadlox");
  break; 
  }
- case 'list3':{
+  case '3':{
  clientMessage("[YFS] Type /NameOfYoutuber to spawn a youtuber"); 
- clientMessage("[YFS][LIST] Youtubers List 3 of 6");
+ clientMessage("[YFS][LIST] Youtubers List 3 of 7");
  clientMessage("HuskyMudkipper"); 
  clientMessage("ihasCupquake");
  clientMessage("ItsHarry");
  clientMessage("ItsJerry");
  break;
  }
- case 'list4':{
+ case '4' :{
  clientMessage("[YFS] Type /NameOfYoutuber to spawn a youtuber"); 
- clientMessage("[YFS][LIST] Youtubers List 4 of 6"); 
+ clientMessage("[YFS][LIST] Youtubers List 4 of 7"); 
  clientMessage("JeromeASF");
  clientMessage("KermitPlaysMC"); 
  clientMessage("NoahCraftFTW"); 
- clientMessage("SethBling");
-  break;
+ clientMessage("Notch")
+ break;
  }
- case 'list5':{
+ case '5':{
  clientMessage("[YFS] Type /NameOfYoutuber to spawn a youtuber"); 
- clientMessage("[YFS][LIST] Youtubers List 5 of 6");
- clientMessage("SkyTheKidRS"); 
+ clientMessage("[YFS][LIST] Youtubers List 5 of 7");
+ clientMessage("PocketIsland"); 
+ clientMessage("SethBling"); 
+ clientMessage("SkythekidRS"); 
  clientMessage("Ssundee"); 
- clientMessage("TBNRfrags"); 
- clientMessage("TrueMU");  
- break;
+   break;
  } 
- case 'list6':{
+  case '6':{
  clientMessage("[YFS] Type /NameOfYoutuber to spawn a youtuber"); 
- clientMessage("[YFS][LIST] Youtubers List 6 of 6");
+ clientMessage("[YFS][LIST] Youtubers List 6 of 7");
+ clientMessage("TBNRfrags"); 
+ clientMessage("TheCampingRusher")
+ clientMessage("TrueMU"); 
+ clientMessage("Vikkstar123");
+ break;
+ }
+ case'7':{
+ clientMessage("[YFS] Type /NameOfYoutuber to spawn a youtuber"); 
+ clientMessage("[YFS][LIST] Youtubers List 7 of 7"); 
  clientMessage("xRpMx13");
- clientMessage(" ");
- clientMessage(" ");
- clientMessage(" ");
+ clientMessage("");
+ clientMessage("");
+ clientMessage(""); 
  break;
  } 
+ break;
+ }
+ break;
+ }
  case'KillBajanCanadian': {
  Entity.setHealth(bajan, 0);
  clientMessage("[YFS] BajanCanadian has been killed");
@@ -92,7 +141,7 @@ clientMessage("[YFS] Bashur has been killed");
  clientMessage("[YFS] BowMaster has been killed");
  break;
  }
- case'KillSkyTheKidRS': {
+ case'KillSkythekidRS': {
  Entity.setHealth(sky, 0);
  clientMessage("[YFS] SkyTheKidRS has been killed");
  break;
@@ -182,8 +231,28 @@ clientMessage("[YFS] TrueMU has been killed");
  clientMessage("[YFS] ItsJerry has been killed");
  break;
  } 
+ case'KillPocketIsland': {
+ Entity.setHealth(pocket, 0);
+ clientMessage("[YFS] PocketIsland has been killed");
+ break;
+ } 
+ case'KillTheCampingRusher': {
+ Entity.setHealth(rush, 0);
+ clientMessage("[YFS] TheCampingRusher has been killed");
+ break;
+ } 
+ case'KillVikkstar123': {
+ Entity.setHealth(vikk, 0);
+ clientMessage("[YFS] Vikkstar123 has been killed");
+ break;
+ } 
+ case'KillNotch': {
+ Entity.setHealth(notch, 0);
+ clientMessage("[YFS] Notch has been killed");
+ break;
+ } 
         case 'help': { 
-        clientMessage("[YFS] Bajan_Deadman0 created this modpe script. Type /list<page> for included youtubers(without spaces) or /all for everyone to spawn. Type /request to see how you can help me! If you can't kill a youtuber type /KillNameOfYoutuber");
+        clientMessage("[YFS] Bajan_Deadman0 created this modpe script. Type /list <page> for included youtubers or /all for everyone to spawn. Type /request to see how you can help me! If you can't kill a youtuber type /KillNameOfYoutuber,/killall to kill all the Youtubers or type /superweapon to get a weapon that kills every entity in the game with one hit");
         break;
         }
         case 'request': {
@@ -235,6 +304,7 @@ clientMessage("[YFS] TrueMU has been killed");
                  seth;
                  Entity.setHealth(seth, 150);
                  Entity.setRenderType(seth, 3); 
+                 Entity.setCarriedItem(seth,383,1,98); 
                  bat=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32,'mob/12.png' ));
                  bat;
                  Entity.setHealth(bat, 150);
@@ -276,6 +346,22 @@ clientMessage("[YFS] TrueMU has been killed");
                  jerry;
                  Entity.setHealth(jerry, 150);
                  Entity.setRenderType(jerry, 3); 
+                   pocket=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32,'mob/21.png' ));
+                 pocket;
+                 Entity.setHealth(pocket, 150);
+                 Entity.setRenderType(pocket, 3); 
+                 rush=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32,'mob/22.png' ));
+                 rush;
+                 Entity.setHealth(rush, 150);
+                 Entity.setRenderType(rush, 3); 
+       vikk=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32,'mob/23.png' ));
+                 vikk;
+                 Entity.setHealth(vikk, 150);
+                 Entity.setRenderType(vikk, 3); 
+                notch=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32,'mob/24.png' ));
+                 notch;
+                 Entity.setHealth(notch, 150);
+                 Entity.setRenderType(notch, 3); 
         clientMessage("[YFS] Everyone has spawned");
         break;}
                  case 'BajanCanadian': {
@@ -299,7 +385,7 @@ clientMessage("[YFS] TrueMU has been killed");
                  Entity.setRenderType(bowmaster, 3); 
                  clientMessage("[YFS] BowMaster (BajanCanadian) has spawned!");
                  break; } 
-                 case 'SkyTheKidRS': {
+                 case 'SkythekidRS': {
                 sky=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,36,'mob/3.png' ));
                  sky;
                  Entity.setHealth(sky, 100);
@@ -349,10 +435,11 @@ clientMessage("[YFS] TrueMU has been killed");
                  clientMessage("[YFS] KermitPlaysMC has spawned!");
                  break; } 
                  case 'SethBling': {
-                seth=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32,'mob/10.png' ));
+                seth=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,36,'mob/10.png' ));
                  seth;
-                 Entity.setHealth(seth, 150);
+                 Entity.setHealth(seth, 100);
                  Entity.setRenderType(seth, 3); 
+                 Entity.setCarriedItem(seth,383,1,98);
                  clientMessage("[YFS] SethBling has spawned!");
                  break; } 
                  case 'xRpMx13': {
@@ -426,13 +513,122 @@ clientMessage("[YFS] TrueMU has been killed");
                  Entity.setRenderType(jerry, 3); 
                  clientMessage("[YFS] ItsJerry has spawned!");
                  break; } 
-   }
-}
-  
+                 case'PocketIsland': {
+                pocket=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32,'mob/21.png' ));
+                 pocket;
+                 Entity.setHealth(pocket, 150);
+                 Entity.setRenderType(pocket, 3); 
+                 clientMessage("[YFS] PocketIsland has spawned!");
+                 break; } 
+                 case'TheCampingRusher': {
+                rush=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32,'mob/22.png' ));
+                 rush;
+                 Entity.setHealth(rush, 150);
+                 Entity.setRenderType(rush, 3); 
+                 clientMessage("[YFS] TheCampingRusher has spawned!");
+                 break; } 
+                 case'Vikkstar123': {
+                vikk=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32,'mob/23.png' ));
+                 vikk;
+                 Entity.setHealth(vikk, 150);
+                 Entity.setRenderType(vikk, 3); 
+                 clientMessage("[YFS] Vikkstar123 has spawned!");
+                 break; } 
+                 case'Notch': {
+                notch=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32,'mob/24.png' ));
+                 notch;
+                 Entity.setHealth(notch, 150);
+                 Entity.setRenderType(notch, 3); 
+                 clientMessage("[YFS] Notch has spawned!");
+                 break; } 
+                 }
+   } 
+    
  function newLevel(){
  
-clientMessage("[YFS] Youtubers Fighting Simulator | The Clones Mod");
+clientMessage("[YFS] Youtubers Fighting Simulator | The Clones Mod v.3");
 clientMessage("[YFS] ©2013 Bajan_Deadman0");
 clientMessage("[YFS] Do not distribute");
 clientMessage("[YFS] Type /help to continue");
+ bajan=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32 ));
+                 bajan;
+                 Entity.setHealth(bajan, 0);
+                 bashur=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32));
+                 bashur;
+                 Entity.setHealth(bashur, 0);
+                 bowmaster=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,34 ));
+                 bowmaster;
+                 Entity.setHealth(bowmaster, 0);
+                 sky=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,36));
+                 sky;
+                 Entity.setHealth(sky, 0);
+                 deadlox=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32));
+                 deadlox;
+                 Entity.setHealth(deadlox, 0);
+                 husky=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32));
+                 husky;
+                 Entity.setHealth(husky, 0);
+                 bodil=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32 ));
+                 bodil;
+                 Entity.setHealth(bodil, 0);
+                 noah=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32 ));
+                 noah;
+                 Entity.setHealth(noah, 0);
+                 ian=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32 ));
+                 ian;
+                 Entity.setHealth(ian, 0);
+                 kermit=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32 ));
+                 kermit;
+                 Entity.setHealth(kermit, 0);
+                 seth=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32 ));
+                 seth;
+                 Entity.setHealth(seth, 0);
+                 bat=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32 ));
+                 bat;
+                 Entity.setHealth(bat, 0);
+                 mu=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32 ));
+                 mu;
+                 Entity.setHealth(mu, 0);
+                  me=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32));
+                 me;
+                 Entity.setHealth(me, 0);
+    captain=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32 ));
+                 captain;
+                 Entity.setHealth(captain, 0);
+                 bacca=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,36 ));
+                 bacca;
+                 Entity.setHealth(bacca, 0);
+                lavamob=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32));
+                 lavamob;
+                 Entity.setHealth(lavamob ,0);
+                 dawn=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32));
+                 dawn;
+                 Entity.setHealth(dawn, 0);
+                 cupquake=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32));
+                 cupquake;
+                 Entity.setHealth(cupquake, 0);
+                harry=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32));
+                 harry;
+                 Entity.setHealth(harry, 0);
+                jerry=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32));
+                 jerry;
+                 Entity.setHealth(jerry, 0);
+                   pocket=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32));
+                 pocket;
+                 Entity.setHealth(pocket, 0);
+                 rush=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32 ));
+                 rush;
+                 Entity.setHealth(rush, 0);
+       vikk=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32));
+                 vikk;
+                 Entity.setHealth(vikk, 0);
+                notch=(Level.spawnMob( Player.getX()-10,Player.getY(),Player.getZ() ,32 ));
+                 notch;
+                 Entity.setHealth(notch, 0);
+} 
+ 
+function attackHook(attacker, victim){ 
+if(getCarriedItem()==268)
+{Entity.setHealth(victim, 1);
+}
 }
