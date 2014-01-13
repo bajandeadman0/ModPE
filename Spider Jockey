@@ -1,0 +1,124 @@
+//Spider Jockey Mod
+//Made by Bajan_Deadman0
+//© Copyright 2014 Bajan_Deadman0
+//Please do not redistribute or say this is your mod 
+ 
+var ticks=1200;
+var countdown=100;
+var n=true;
+var a=0;
+var b=0;
+var m=0;
+var d=0;
+var initialized=false;
+var spawning=false;
+var skeleton=0;
+var spider=0;
+ 
+ function selectLevelHook() {
+if(initialized==false) {
+ModPE.setItem(500, "skull_skeleton", 0, "Spider Jockey Spawner");
+initialized=true;
+} 
+} 
+ 
+ function procCmd(c) {
+   var p = c.split(" ");
+   var command = p[0];
+   switch(command){
+   default: {
+            clientMessage("[SJ] Command does not exist | wrong spelling. Type /help for information!");
+            break;
+        } 
+        case 'notifications': {
+        if(n==true){
+        clientMessage("[SJ]  Notifications have been turned off")
+        n=false;
+        }
+        else if(n==false){
+          clientMessage("[SJ] Notifications have been turned on ");
+          n=true;
+         break; 
+         }
+         }
+         case 'help':{
+         clientMessage("[SJ] Spider Jockeys have a 1% chance to spawn every 1 minute. If they spawn they have a 10% chance to drop a Spider Jockey Spawner and 4% chance to drop a diamond. If notifications are on you will be informed whether it has spawned or not. If you turn notifications off you won't.");
+         break;
+         }
+         }
+         }
+ 
+function modTick() {
+ ticks--;
+ countdown--;
+      if(countdown==0){
+      d= Math.floor(Math.random() * 10)+1; 
+         r= Math.floor(Math.random() * 25)+1; 
+        countdown = 100; 
+      }
+    if(ticks == 0) {
+           a= Math.floor(Math.random * 25) + 1;
+        b= Math.floor(Math.random * 25) + 1;
+        m= Math.floor(Math.random() * 100)+1;
+        spawning = true;
+        ticks = 1200;   
+        clientMessage("[SJ]Spawning...");
+    }
+    if(spawning == true) {
+    if(m==1){
+     spider=Entity.spawnMob(Player.getX()-a, Player.getY(), Player.getZ()+b, 35);                        
+     skeleton=Entity.spawnMob( Player.getX()-a, Player.getY(), Player.getZ()+b, 34);
+       rideAnimal(skeleton, spider);
+                 Entity.setHealth(skeleton, 20);
+                 Entity.setHealth(spider,16);
+                 spawning=false;
+                 if(n=true){
+                 clientMessage("[SJ] Spawning successful! Look around...")
+                 }
+                 }
+                 else if(m==2|| m==3|| m==4|| m==5|| m==6|| m==7| m==8|| m==9|| m==10|| m==11|| m==12|| m==13|| m==14|| m==15|| m==16|| m==17|| m==18|| m==19|| m==20|| m==21|| m==22|| m==23|| m==24|| m==25|| m==26|| m==27|| m==28|| m==29|| m==30|| m==31|| m==32|| m==33|| m==34|| m==35|| m==36|| m==37|| m==38|| m==39|| m==40|| m==41|| m==42|| m==43|| m==44|| m==45|| m==45|| m==46|| m==47|| m==48|| m==49|| m==50|| m==51|| m==52|| m==53|| m==54|| m==55|| m==56|| m==57|| m==58|| m==59|| m==60|| m==61|| m==62|| m==63|| m==64|| m==65|| m==66|| m==67|| m==68|| m==69|| m==70|| m==71|| m==72|| m==73|| m==74|| m==75|| m==76|| m==77|| m==78|| m==79|| m==80|| m==81|| m==82|| m==83|| m==84|| m==85|| m==86|| m==87|| m==88|| m==89|| m==90|| m==91|| m==92|| m==93|| m==94|| m==95|| m==96|| m==97|| m==98|| m==99|| m==100 ){
+                 spawning=false; 
+                 if(n=true){
+                 clientMessage("[SJ] Spider Jockey didn't spawned");
+                 }
+                    }
+                    }
+                    }
+                     
+                     function newLevel(){
+ 
+clientMessage("[SJ] Spider Jockey Mod - Spider Jockeys on MCPE!");
+clientMessage("[SJ] ©2014 Bajan_Deadman0");
+clientMessage("[SJ] Do not distribute");
+clientMessage("[SJ] Type /help for information");
+clientMessage("[SJ] Type /notifications to turn notifications off(currently on)");
+}
+  
+ function useItem(x, y, z, itemId, blockId, side)  
+{  
+if(itemId==500)  
+{  
+ preventDefault(); 
+ spider=Entity.spawnMob(x,y+1,z , 35);                        
+     skeleton=Entity.spawnMob( x,y+ 1,z , 34);
+       rideAnimal(skeleton, spider);
+                 Entity.setHealth(skeleton, 20);
+                 Entity.setHealth(spider,16);    clientMessage("[SJ] Spider Jockey has spawned"); 
+                 Player.addItemInventory(500,-1); 
+                 }
+                 }
+                  
+                  
+                  
+ function deathHook(murderer, victim) {
+ if (victim== skeleton){
+ if (d==5){
+Level.dropItem(Entity.getX(victim), Entity.getY(victim), Entity.getZ(victim), 1, 500, 1);
+}
+}
+ else if (victim== spider){
+ if (r==12){
+Level.dropItem(Entity.getX(victim), Entity.getY(victim), Entity.getZ(victim), 1, 264, 2);
+}
+}
+}
