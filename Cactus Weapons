@@ -1,0 +1,73 @@
+//Cactus Weapons Mod
+//Made by Bajan_Deadman0
+//© Copyright 2013 Bajan_Deadman0
+//Please do not redistribute or say this is your mod! 
+ 
+var initialized=false;
+var blade=100;
+var sword=250;
+ 
+ function procCmd(c) {
+   var p = c.split(" ");
+   var command = p[0];
+   switch(command){
+   default: {
+            clientMessage("[CW] Make cactus blades by tapping 2+ cactus blocks on a crafting table. Use 1 stick and 2 cactus blades on a crafting bench to make a cactus sword");
+            break;
+        } 
+        case 'help': {
+            clientMessage("[CW] Make cactus blades by tapping 2+ cactus blocks on a crafting table. Use 1 stick and 2 cactus blades on a crafting bench to make a cactus sword");
+            break; 
+            }
+ case 'durability': {
+        clientMessage("[CW] Cactus blade's durability: "+blade+" \n [CW] Cactus Sword's durability: "+sword+" ");
+        break;
+        } 
+         
+function selectLevelHook() {
+if(initialized==false) {
+ModPE.setItem(515, "name_tag", 0, "Cactus blade");
+ModPE.setItem(516, "ruby", 0, "Cactus Sword");
+initialized=true;
+} 
+}
+ 
+ function attackHook(attacker, victim){ 
+if(getCarriedItem()==515)
+{Entity.setHealth(victim, Entity.getHealth(victim)-3);
+blade--;
+}
+if(getCarriedItem()==516)
+{Entity.setHealth(victim, Entity.getHealth(victim)-6);
+sword--;
+}
+} 
+ 
+ function newLevel(){
+ 
+clientMessage("[CW]  Cactus Weapons v1.0");
+clientMessage("[CW] ©2014 Bajan_Deadman0");
+clientMessage("[CW] Do not distribute");
+clientMessage("[CW] Type /help to continue");
+  
+ blade=ModPE.readData("blade");
+ sword=ModPE.readData("sword");
+  
+  
+} 
+ function leaveGame(){
+              ModPE.saveData("blade",blade);
+              ModPE.saveData("sword",sword);
+ }
+  
+ function useItem(x, y, z, itemId, blockId, side)  
+{  
+if(itemId==264)  
+{  
+preventDefault();  
+herobrine = (Level.spawnMob(x-10, y+3, z, 32, "mob/Herobrine.png"));     
+ herobrine;
+                 Entity.setHealth(herobrine, 200);
+                 Entity.setRenderType(herobrine,3);          
+}   
+ } 
