@@ -1,0 +1,128 @@
+//The Itemizer
+//Made by Bajan_Deadman0
+//© Copyright 2014 Bajan_Deadman0
+//Please do not redistribute or say this is your mod! 
+
+var initialized=false;
+var uses=100;
+var t=1200;
+ function selectLevelHook() {
+if(initialized==false) {
+ ModPE.setItem(479, "stick", 0, "Itemizer"); 
+ ModPE.setItem(480,"blaze_rod",0,"Itemizer Battery");
+    	Item.addCraftRecipe(479, 1, 0, [266, 4, 0, 264, 1, 0]);
+	    Item.setCategory(479,2,1);
+	    Item.addCraftRecipe(480,1,0,[4,8,0,351,1,4]);
+	    Item.setCategory(480,2,1);
+initialized=true;
+} 
+} 
+	 
+ function procCmd(c) {
+   var p = c.split(" ");
+   var command = p[0];
+   switch(command){
+   default: {
+			clientMessage("[IS] Access denied.");
+			break;
+		} 
+		case'ri':{
+		clientMessage("[IS] Itemizer repaired");
+		uses=100;
+		t=1;
+		break;
+		}
+		}
+		}
+		
+
+ function leaveGame(){
+     ModPE.saveData("uses",uses); 
+     ModPE.saveData("t",t);
+ } 
+
+ function newLevel(){
+
+clientMessage("[IS] Itemizer v1.0");
+clientMessage("[IS] ©2014 Bajan_Deadman0");
+clientMessage("[IS] Do not distribute");
+
+ uses=ModPE.readData("uses");
+ t=ModPE.readData("t");
+ }
+ 
+ function useItem(x, y, z, itemId, blockId, side)  
+{  
+if(itemId==479){
+if(uses>=1){
+tile=Level.getTile(x,y,z);
+data=Level.getData(x,y,z);
+Player.addItemInventory(tile,1,data);
+uses=uses-1;
+Level.setTile(x,y,z,0);
+Level.playSound(x,y,z,"random.pop",1,1);clientMessage("[IS] "+uses+" % charge left.");
+}
+else if(uses==0){
+clientMessage("[IS] Itemizer at 0 % . Wait to recharge.");
+}
+}
+
+if(itemId==481){
+Level.dropItem(255,1);
+Player.addItemInventory(481,-1);
+}
+if(itemId==480){
+if(uses>=75){
+uses=100;
+ Player.addItemInventory(480,-1); 
+ clientMessage("[IS] Itemizer charged at "+uses+" % .");
+}
+else if(uses<=74){
+uses=uses+25;
+Player.addItemInventory(480,-1);
+clientMessage("[IS] Itemizer charged at "+uses+" % .");
+}
+ }
+ }
+
+
+ function modTick() {
+ t--;
+ if(t==0){
+ if(uses<=99){
+ uses=uses+1;
+ clientMessage("[IS] Charged to "+uses+" % .");
+ t=1200;
+ }
+ else if(uses>=100){
+ clientMessage("[IS] Itemizer is at 100 % charge.");
+ t=1200;
+ uses=100;
+ }
+ }
+ else if(t>=1201){
+ t=1;
+ }
+ }
+ 
+ function attackHook(attacker, victim){ 
+
+if(getCarriedItem()==479){
+ if(uses>=1){ 
+ x=Player.getX();
+ y=Player.getY();
+ z=Player.getZ();
+ 
+Player.addItemInventory(383,1, (Entity.getEntityTypeId(victim) ));
+Level.playSound(x,y,z,"random.pop",1,1);
+ uses=uses-1;
+clientMessage("[IS] "+uses+" % charge left."); 
+Entity.remove(victim);
+
+}
+
+else if(uses==0){
+clientMessage("[IS] Itemizer at 0 % . Wait to recharge.");
+}
+}
+}
