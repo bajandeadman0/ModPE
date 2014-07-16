@@ -1,72 +1,72 @@
-//Itemizer Staff v2.2
+//Itemizer Staff v2.3
 //Made by Bajan_Deadman0
 //© Copyright 2014 Bajan_Deadman0
 //Please do not redistribute or say this is your mod! 
- 
+
 var initialized=false;
 var uses=100;
 var t=1200;
 var blocks=0;
 var mobs=0;
 var seconds=0;
- 
+
  function selectLevelHook() {
 if(initialized==false) {
  ModPE.setItem(479, "fireball", 0, "Itemizer"); 
  ModPE.setItem(480,"blaze_rod",0,"Itemizer Battery");
-        Item.addCraftRecipe(479, 1, 0, [266, 1, 0, 264, 1, 0, 266, 1, 0, 0, 1, 0, 266, 1, 0, 0, 2, 0, 266, 1 , 0]);
-        Item.setCategory(479,2,1);
-        Item.addCraftRecipe(480,1,0,[4,4,0,351,1,4,4,4,0]);
-        Item.setCategory(480,2,1);
-        ModPE.setItems("http://i.imgur.com/dWm5vTS.png");
+    	Item.addCraftRecipe(479, 1, 0, [266, 1, 0, 264, 1, 0, 266, 1, 0, 0, 1, 0, 266, 1, 0, 0, 2, 0, 266, 1 , 0]);
+	    Item.setCategory(479,2,1);
+	    Item.addCraftRecipe(480,1,0,[4,4,0,351,1,4,4,4,0]);
+	    Item.setCategory(480,2,1);
+	    ModPE.setItems("http://i.imgur.com/dWm5vTS.png");
 initialized=true;
 } 
 } 
-      
+	 
  function procCmd(c) {
    var p = c.split(" ");
    var command = p[0];
    switch(command){
    default: {
-            clientMessage("[IS] Type /help.");
-            break;
-        } 
-        case'ri':{
-        clientMessage("[IS] Itemizer repaired");
-        uses=100;
-        t=10;
-        break;
-        }
-        case'stats':{
-        clientMessage("[IS] Mobs Itemized : "+mobs+"  \n[IS] Blocks Itemized : "+blocks+" \n[IS] Durability : "+uses+" % \n[IS] Charging Cooldown : "+seconds+" seconds \n[IS] To restore stats to zero type /rstats");
-         break; 
-        }
-        case'rstats':{
-        mobs=0;
-        blocks=0;
-        clientMessage("[IS] Stats restored");
-         break; 
-        }
-        case'help':{
-        clientMessage("[IS] Commands available \n[IS] /help \n[IS] /stats // Shows how many mobs and blocks have been itemized, durability and time to recharge \n[IS] /rstats // Restores stats to zero");
-         break; 
-        }
-        }
-        }
-         
- 
+			clientMessage("[IS] Type /help.");
+			break;
+		} 
+		case'ri':{
+		clientMessage("[IS] Itemizer repaired");
+		uses=100;
+		t=10;
+		break;
+		}
+		case'stats':{
+		clientMessage("[IS] Mobs Itemized : "+mobs+"  \n[IS] Blocks Itemized : "+blocks+" \n[IS] Durability : "+uses+" % \n[IS] Charging Cooldown : "+seconds+" seconds \n[IS] To restore stats to zero type /rstats");
+		 break; 
+		}
+		case'rstats':{
+		mobs=0;
+		blocks=0;
+		clientMessage("[IS] Stats restored");
+		 break; 
+		}
+		case'help':{
+		clientMessage("[IS] Commands available \n[IS] /help \n[IS] /stats // Shows how many mobs and blocks have been itemized, durability and time to recharge \n[IS] /rstats // Restores stats to zero");
+		 break; 
+		}
+		}
+		}
+		
+
  function leaveGame(){
      ModPE.saveData( Level.getWorldDir () + "uses",uses); 
      ModPE.saveData( Level.getWorldDir () + "t",t);
      ModPE.saveData( Level.getWorldDir () + "mobs",mobs);
      ModPE.saveData( Level.getWorldDir () + "blocks",blocks); 
  } 
- 
+
  function newLevel(){
- 
- 
- clientMessage("[IS] Itemizer Staff v2.2 \n[IS] ©2014 Bajan_Deadman0 \n[IS] Do not distribute \n[IS] Type /help to continue "); 
- 
+
+
+ clientMessage("[IS] Itemizer Staff v2.3 \n[IS] ©2014 Bajan_Deadman0 \n[IS] Do not distribute \n[IS] Type /help to continue "); 
+
  uses=ModPE.readData( Level.getWorldDir () + "uses");
  t=ModPE.readData( Level.getWorldDir () + "t");
  blocks=ModPE.readData( Level.getWorldDir () + "blocks");
@@ -78,7 +78,7 @@ initialized=true;
  t=1200;
  }
  }
-  
+ 
  function useItem(x, y, z, itemId, blockId, side)  
 {  
 if(itemId==479){
@@ -89,13 +89,13 @@ Player.addItemInventory(tile,1,data);
 uses=uses-1;
 blocks=blocks+1;
 Level.setTile(x,y,z,0);
-Level.playSound(x,y,z,"random.pop",1,1);clientMessage("[IS] "+uses+" % charge left.");
+Level.playSound(x,y,z,"random.pop",1,1);ModPE.showTipMessage("[IS] "+uses+" % charge left.");
 }
 else if(uses==0){
-clientMessage("[IS] Itemizer at 0 % . Wait to recharge.");
+ModPE.showTipMessage("[IS] Itemizer at 0 % . Wait to recharge.");
 }
 }
- 
+
 if(itemId==481){
 Level.dropItem(255,1);
 Player.addItemInventory(481,-1);
@@ -104,28 +104,28 @@ if(itemId==480){
 if(uses>=75){
 uses=100;
  Player.addItemInventory(480,-1); 
- clientMessage("[IS] Itemizer charged at "+uses+" % .");
+ ModPE.showTipMessage("[IS] Itemizer charged at "+uses+" % .");
 }
 else if(uses<=74){
 uses=uses+25;
 Player.addItemInventory(480,-1);
-clientMessage("[IS] Itemizer charged at "+uses+" % .");
+ModPE.showTipMessage("[IS] Itemizer charged at "+uses+" % .");
 }
  }
  }
- 
- 
+
+
  function modTick() {
  t--;
  seconds=(t)/20;
  if(t<=0){
  if(uses<=99){
  uses=uses+1;
- clientMessage("[IS] Charged to "+uses+" % .");
+ ModPE.showTipMessage("[IS] Charged to "+uses+" % .");
  t=1200;
  }
  else if(uses>=100){
- clientMessage("[IS] Itemizer is at 100 % charge.");
+ ModPE.showTipMessage("[IS] Itemizer is at 100 % charge.");
  t=1200;
  uses=100;
  }
@@ -134,26 +134,26 @@ clientMessage("[IS] Itemizer charged at "+uses+" % .");
  t=1;
  }
  }
-  
- function attackHook(attacker, victim){ 
  
+ function attackHook(attacker, victim){ 
+
 if(getCarriedItem()==479){
  if(uses>=1){ 
  x=Player.getX();
  y=Player.getY();
  z=Player.getZ();
-  
+ 
 Player.addItemInventory(383,1, (Entity.getEntityTypeId(victim) ));
 Level.playSound(x,y,z,"random.pop",1,1);
  uses=uses-1;
  mobs=mobs+1;
-clientMessage("[IS] "+uses+" % charge left."); 
+ModPE.showTipMessage("[IS] "+uses+" % charge left."); 
 Entity.remove(victim);
- 
+
 }
- 
+
 else if(uses==0){
-clientMessage("[IS] Itemizer at 0 % . Wait to recharge.");
+ModPE.showTipMessage("[IS] Itemizer at 0 % . Wait to recharge.");
 }
 }
 }
