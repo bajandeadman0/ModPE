@@ -1,0 +1,281 @@
+//Tool Repairer v1.0
+//Made by Bajan_Deadman0
+//2014 Bajan_Deadman0
+//Please do not redistribute or say this is your mod! 
+ 
+var essence=0;
+var repairing=0;
+var damage=0;
+var item=0;
+var rx=0;
+var ry=0;
+var rz=0;
+var tick=40;
+var time=0;
+var initialized=false;
+ 
+//Auto update 
+ 
+var version="1.0";
+var checkForUpdate=false;
+var updateWindow=false; 
+var newUpdate;
+var updateMod; 
+var ctx = com.mojang.minecraftpe.MainActivity.currentMainActivity.get(); 
+ 
+ function checkVersion() {
+    var r  = new java.lang.Runnable() {
+        run: function() {
+            try {
+                var urls= new java.net.URL("https://raw.githubusercontent.com/bajandeadman0/ModPE/master/trversion");
+                var check = urls.openConnection();
+                check.setRequestMethod("GET");
+                check.setDoOutput(true);
+                check.connect();
+                check.getContentLength();
+                var script = check.getInputStream();
+                var typeb = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 1024);
+                var byteCount = 0; 
+                var checkedVersion;
+                while((byteCount = script.read(typeb)) != -1) { 
+                    checkedVersion = new java.lang.String(typeb, 0, byteCount);               
+                }
+                newUpdate = checkedVersion;
+                if(version+"\n" != checkedVersion) {
+                    clientMessage("§8[MH] §fNew version! " + newUpdate);
+                    updateWindow=true;
+                }
+                else if(version+"\n"==checkedVersion){
+                clientMessage("§8[TR] No updates available");
+                }
+            }
+            catch(err) {
+                clientMessage("§8[TR] Update check failed ");
+                if(err=="JavaException: java.net.UnknownHostException: raw.githubusercontent.com") {
+                                clientMessage("§8[TR] No internet connection.");
+                            }
+                            else {
+                                clientMessage("§8[TR]   Error: \n" + err);
+                            } 
+            }
+        }
+    }
+    var threadt = new java.lang.Thread(r);
+    threadt.start();
+}
+function updateVersion() {
+    try {
+        var upd = new android.app.AlertDialog.Builder(ctx);
+        upd.setTitle("New version available!");
+        upd.setMessage("An update to Tool Repairer was found!\nWould you like to update it now?\nCurrent version: " + version + "\nNew version: " + newUpdate);
+        upd.setNegativeButton("Later", new android.content.DialogInterface.OnClickListener() {
+            onClick: function(par1) {
+            dialog.dismiss(); 
+   }
+        });
+        upd.setPositiveButton("Update", new android.content.DialogInterface.OnClickListener() {
+            onClick: function(par1) {
+                var ru  = new java.lang.Runnable() {
+                    run: function() {
+                        try {
+                            var urls = new java.net.URL("https://raw.githubusercontent.com/bajandeadman0/ModPE/master/Tool%20Repairer");
+                            var check = urls.openConnection();
+                            check.setRequestMethod("GET");
+                            check.setDoOutput(true);
+                            check.connect();
+                            check.getContentLength();
+                            var script = check.getInputStream();
+                            var typeb = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 1024);
+                            var byteCount = 0;
+                            while((byteCount = script.read(typeb)) != -1) { 
+                                updateMod += new java.lang.String(typeb, 0, byteCount);               
+                            }
+                            var modpeFolder = ctx.getDir("modscripts", 0);
+                            var modpeFile = new java.io.File(modpeFolder, "Tool Repairer.js");
+                            var update = new java.io.PrintWriter(modpeFile);
+                            update.write(updateMod);
+                            update.flush();
+                            update.close();
+                             
+                            try {
+                                net.zhuoweizhang.mcpelauncher.ScriptManager.setEnabled(modpeFile, false);
+                                net.zhuoweizhang.mcpelauncher.ScriptManager.setEnabled(modpeFile, true);
+                                clientMessage("§3[TR] Downloaded and enabled!");
+                                   
+                            }
+                            catch(err) {
+                                clientMessage("§8[TR] Error: \n" + err);
+                            }
+                        }
+                        catch(err) {
+                            clientMessage("§8[TR] Error: \n" + err);
+                        }
+                    }
+                }
+                var threadt = new java.lang.Thread(ru);
+                threadt.start();
+            }
+        });
+        var dialog = upd.create();
+        dialog.show() 
+    }
+    catch(err) {
+        clientMessage("§8[TR] Error: \n" + err);
+    }
+}
+  
+ function selectLevelHook() {
+if(initialized==false) {
+ ModPE.setItem(482,"cauldron",0,"Essence"); 
+ Item.addShapedRecipe(482, 16, 0, ["LG ", "BS"], ["L",334,0, "G", 289, 0, "B", 352, 0, "S",287  ,0 ]);
+        Item.setCategory(482,2,1);  
+ Block.defineBlock(255, "Tool Repairer", [["piston_bottom",0],["piston_inner",0],["piston_bottom",0],["piston_bottom",0],["piston_bottom",0],["piston_bottom",0]], 4, false, 0);
+Block.setDestroyTime(255, 5);
+Item.setCategory(255, 2,1);
+ Item.addShapedRecipe(255, 1, 0, ["DID", "ICI", "DID"], ["I",265,0, "C", 58, 0, "D", 264, 0]); 
+ initialized=true;
+} 
+} 
+ 
+function modTick(){
+if(repairing==1&&damage!=0&&essence!=0){
+tick--;
+if(tick==0){
+damage--;
+essence--;
+tick=40;
+}
+}
+else if(repairing==1&&damage==0){ 
+clientMessage("[TP] Item fully fixed. "+essence+" essence left");
+giveItem();
+damage=1;
+}
+else if(repairing==1&&essence==0){ 
+clientMessage("[TP] Not enough essence");
+giveItem();
+}
+  
+ if(checkForUpdate==false) {
+        print("Checking for updates");
+        ctx.runOnUiThread(new java.lang.Runnable({
+            run: function() {
+                try {
+                    checkVersion();
+                }
+                catch(err) {
+                    clientMessage("§8[IS] Error: \n"+err);
+                }
+            }
+        }));
+        checkForUpdate=true;
+    }
+    if(updateWindow) {
+        ctx.runOnUiThread(new java.lang.Runnable({
+            run: function() {
+                try {
+                    updateVersion();
+                }
+                catch(err) {
+                    clientMessage("§8[IS] Error: \n" + err);
+                }
+            }
+        }));
+        updateWindow=false;
+    } 
+}
+ 
+     
+    function useItem(x, y, z, itemId, blockId, side)  {  
+    if(blockId==255&&itemId!=0&&itemId!=482){
+    if(repairing==0){
+    checkRepairer();
+    rx=x;
+    ry=y;
+    rz=z;
+    }
+     else if(repairing==1){
+     giveItem();
+     }
+     }
+     if(itemId==482&&blockId==255){
+     essence=essence+(Player.getInventorySlotCount(Player.getSelectedSlotId())); 
+     Player.clearInventorySlot(Player.getSelectedSlotId()); 
+     clientMessage("[TP] Essence :"+essence);
+     }
+     if(itemId==0&&repairing==1&&blockId==255){
+     giveItem();
+     }
+     }
+      
+function checkRepairer(){
+repair();
+clientMessage("[TP] Repairing tool");
+}
+ 
+ 
+function repair(){
+damage= Player.getInventorySlotData(Player.getSelectedSlotId());
+time=damage*2;
+item=Player.getInventorySlot(Player.getSelectedSlotId());
+Player.clearInventorySlot(Player.getSelectedSlotId());
+repairing=1;
+clientMessage("[TP] Damage Done : "+damage+"\n[TP] Estimated Time: "+time+" seconds");
+}
+ 
+function giveItem(){
+ Player.addItemInventory(item,1,damage); 
+     repairing=0; 
+}
+ 
+ 
+ function save() {
+        var file = new java.io.File( android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/games/com.mojang/deadCraftWorlds/"+Level.getWorldDir()+"/Tool Repairer/", "Tool Repairer.txt");
+        var path=android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/games/com.mojang/deadCraftWorlds/"+Level.getWorldDir()+"/Tool Repairer/"; 
+  java.io.File(path).mkdirs(); 
+        file.createNewFile();
+        var write = new java.io.OutputStreamWriter(new java.io.FileOutputStream(file));
+        var string="";
+        write.append(essence.toString());
+        write.append(","+ repairing.toString());
+        write.append(","+ damage.toString()); 
+        write.append(","+ item.toString()); 
+        write.append(","+ rx.toString()); 
+        write.append(","+ ry.toString()); 
+        write.append(","+ rz.toString()); 
+        write.append(","+ tick.toString()); 
+        write.close();
+    } 
+ 
+function load(){
+ var line, string = "";
+    var file = new java.io.File( android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/games/com.mojang/deadCraftWorlds/"+Level.getWorldDir()+"/Tool Repairer/", "Tool Repairer.txt");
+    var path=android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/games/com.mojang/deadCraftWorlds/"+Level.getWorldDir()+"/Tool Repairer/"; 
+    if(!file.exists()){
+  java.io.File(path).mkdirs(); 
+    }
+    else { 
+    var readfile = new java.io.BufferedReader(new java.io.FileReader(file));
+    while((line = readfile.readLine()) != null) {
+        var t1 = line + java.lang.System.getProperty("line.seperator");
+        string += t1.substring(0, t1.length - 4);
+        var t2 = line;
+        if((line = readfile.readLine()) != null) string += "\n";
+        line = t2;
+    } 
+    essence=parseInt(string.split(",")[0]);    
+    repairing= parseInt(string.split(",")[1]);
+    damage= parseInt(string.split(",")[2]);
+    item= parseInt(string.split(",")[3]);
+    rx= parseInt(string.split(",")[4]);
+    ry= parseInt(string.split(",")[5]); 
+    rz= parseInt(string.split(",")[6]);
+    tick= parseInt(string.split(",")[7]); 
+}
+}
+ function newLevel(){
+ clientMessage("§8[TR] §FTool Repairer  §3v"+version+"§f \n§8[TR] §fBy Bajan_Deadman0 \n§8[TR] §fDo not distribute "); 
+    load();
+    }function leaveGame(){
+    save();
+    }
