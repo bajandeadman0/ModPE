@@ -1,9 +1,9 @@
-//Itemizer Staff v3.0
+//Itemizer Staff v3.5
 //Made by Bajan_Deadman0
 //2014 Bajan_Deadman0
 //Please do not redistribute or say this is your mod! 
 
-var version = "3.0"; 
+var version = "3.5"; 
 var initialized=false;
 var uses=100;
 var t=1200;
@@ -17,6 +17,14 @@ var days=0;
 var num1=0;
 var hminutes=0;
 var hoursd=0;
+var bs;
+var ms;
+var bsl;
+var msl;
+var bco=0; 
+var bcz=0;
+var mco=0;
+var mcz=0;
 
 //GUI 
 
@@ -39,9 +47,19 @@ var ctx = com.mojang.minecraftpe.MainActivity.currentMainActivity.get();
 //Auto update 
 
 var checkForUpdate=false;
-var updateWindow=false;
+var updateWindow=false; 
 var newUpdate;
 var updateMod;
+
+//Chest grab
+
+var chest=[]; 
+var chh=0; 
+var chx=0;
+var chy=0;
+var chz=0;
+var filled=false; 
+var emptyI=0;
 
  
  function dip2px(ctx, dips){
@@ -109,10 +127,10 @@ function updateVersion() {
                             check.setDoOutput(true);
                             check.connect();
                             check.getContentLength();
-                            var input = check.getInputStream();
+                            var script = check.getInputStream();
                             var typeb = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 1024);
                             var byteCount = 0;
-                            while((byteCount = input.read(typeb)) != -1) { 
+                            while((byteCount = script.read(typeb)) != -1) { 
                                 updateMod += new java.lang.String(typeb, 0, byteCount);               
                             }
                             var modpeFolder = ctx.getDir("modscripts", 0);
@@ -121,10 +139,12 @@ function updateVersion() {
                             update.write(updateMod);
                             update.flush();
                             update.close();
+                            
                             try {
                                 net.zhuoweizhang.mcpelauncher.ScriptManager.setEnabled(modpeFile, false);
                                 net.zhuoweizhang.mcpelauncher.ScriptManager.setEnabled(modpeFile, true);
-								clientMessage("§3[IS] Downloaded and enabled!");
+								clientMessage("§3[IS] Downloaded and enabled!. Check the changelog");
+								  
                             }
                             catch(err) {
                                 clientMessage("§8[IS] Error: \n" + err);
@@ -362,8 +382,8 @@ function updateVersion() {
 	 alert.setMessage("Blocks Itemized will go to zero, as well as Mobs Itemized."); 
 	alert.setPositiveButton("Ok",new android.content.DialogInterface.OnClickListener(){
 		onClick: function(dialog){
-			 blocks=0;
-			 mobs=0;
+			
+			 rstats();
 			} 
 		});
 
@@ -382,6 +402,16 @@ function updateVersion() {
     });
     alert.show();
 }
+
+ function showChangelog() {
+    var change = new android.app.AlertDialog.Builder(ctx);
+    change.setTitle("Changelog");
+    change.setMessage("Itemizer Staff Version " + version + "\nThe changes in Version "+version+" are :\n\nAdded a better stats debug system.\nAdded the Chestimizer an item that can pickup the items from a chest(Like a backpack). The crafting recipe is 3 sticks, 1 chest and 1 Itemizer. The items save when you leave\ if you haven't deposit them\nChanged some script methods.");
+    change.setNegativeButton("Ok", new android.content.DialogInterface.OnClickListener() {
+        onClick: function(dialog){}
+    });
+    change.show();
+} 
  
  function menu_Extra(){
 	try{
@@ -425,6 +455,15 @@ function updateVersion() {
 						}
 					}));
 				layout.addView(B_thread);
+				
+				 var B_change=new android.widget.Button(ctx);
+				B_change.setText("Changelog");
+				B_change.setOnClickListener(new android.view.View.OnClickListener({
+					onClick: function(v){
+						showChangelog();
+						}
+					}));
+				layout.addView(B_change); 
 				 
 		var B_exit = new android.widget.Button(ctx);
 		B_exit.setText("Back");
@@ -444,14 +483,17 @@ function updateVersion() {
 	}
 }
  
+	 
  function selectLevelHook() {
 if(initialized==false) {
  ModPE.setItem(479, "fireball", 0, "Itemizer"); 
  ModPE.setItem(480,"blaze_rod",0,"Itemizer Battery");
- Item.addShapedRecipe(479, 1, 0, ["GDG", "G", "G"], ["S",0,0, "G", 266, 0, "D", 264, 0]); 
+ ModPE.setItem(481,"hopper",0,"Chestimizer"); 
+ Item.addShapedRecipe(479, 1, 0, ["GDG", " G ", " G "], ["S",0,0, "G", 266, 0, "D", 264, 0]); 
 	    Item.setCategory(479,2,1);
 	    Item.addShapedRecipe(480, 1, 0, ["CCC", "CLC", "CCC"], ["C", 4, 0, "L", 351, 4]); 
-	    ModPE.setItems("http://i.imgur.com/dWm5vTS.png");
+	    Item.addShapedRecipe(481, 1, 0, ["SCS", " I ", " S "], ["I", 479, 0, "S", 280, 0, "C", 54,0]); 
+	    ModPE.setItems("http://i.imgur.com/94a1euT.png");
 initialized=true;
 } 
 } 
@@ -479,11 +521,6 @@ initialized=true;
 		
 
  function leaveGame(){
-     ModPE.saveData( Level.getWorldDir () + "uses",uses); 
-     ModPE.saveData( Level.getWorldDir () + "t",t);
-     ModPE.saveData( Level.getWorldDir () + "mobs",mobs);
-     ModPE.saveData( Level.getWorldDir () + "blocks",blocks); 
-     
      T_T = null;
 	T_D = null;
 	var S_BI=null;
@@ -519,23 +556,14 @@ initialized=true;
 			} 
 		}
 	})); 
+	saveChest();
  } 
 
  function newLevel(){
 
 
- clientMessage("§8[IS] §fItemizer Staff §3v"+version+"§f \n§8[IS] §fBy Bajan_Deadman0 \n§8[IS] §fDo not distribute \n§8[IS] §fPress [IS] to continue "); 
+ clientMessage("§8[IS] §fItemizer Staff §3v"+version+"§f \n§8[IS] §fBy Bajan_Deadman0 \n§8[IS] §fDo not distribute \n§8[IS] §fPress [IS] to continue \n§8[IS] §fIf you don't know what changed in this version \n§8[IS] §fcheck the changelog at the extra menu"); 
 
- uses=ModPE.readData( Level.getWorldDir () + "uses");
- t=ModPE.readData( Level.getWorldDir () + "t");
- blocks=ModPE.readData( Level.getWorldDir () + "blocks");
- mobs=ModPE.readData( Level.getWorldDir () + "mobs"); 
- if(uses>=101){
- uses=100;
- }
- if(t>=1201){
- t=1200;
- }
 	ctx.runOnUiThread(new java.lang.Runnable({
 		run: function() {
 			try{
@@ -557,7 +585,21 @@ initialized=true;
 			}
 		}
 	})); 
- }
+	 
+	 rstats();
+			 
+			 if(uses>=101){
+			uses=100;
+			clientMessage("§8[IS] §fDebugged durability");
+			}
+			if(t>=1201){
+			t=1200;	 
+			 clientMessage("§8[IS] §fDebugged charging cooldown"); 
+			}
+			loadChest();
+			
+			} 
+ 
  
  function useItem(x, y, z, itemId, blockId, side)  
 {  
@@ -566,8 +608,8 @@ if(uses>=1&&uses<=100){
 tile=Level.getTile(x,y,z);
 data=Level.getData(x,y,z);
 Player.addItemInventory(tile,1,data);
-uses=uses-1;
-blocks=blocks+1;
+uses--;
+blocks++;
 Level.setTile(x,y,z,0);
 Level.playSound(x,y,z,"random.pop",1,1);ModPE.showTipMessage("§8[IS] §f"+uses+" % charge left.");
 }
@@ -580,9 +622,43 @@ clientMessage("§8[IS] §fSomething is wrong! Go to the debug menu and select It
 }
 
 if(itemId==481){
-Level.dropItem(255,1);
-Player.addItemInventory(481,-1);
+ if(blockId==54){ 
+ chx=x;
+ chy=y;
+ chz=z;
+ checkChest();
+ if(chh==0){ 
+ if(filled==true){ 
+ preventDefault();
+for(var i=0; i<27; i++){
+chest[i]= [Level.getChestSlot(chx, chy, chz, i), Level.getChestSlotCount(chx, chy, chz, i), Level.getChestSlotData(chx, chy, chz, i)]; 
+Level.playSound(x,y,z,"random.pop",1,1);
+Level.setChestSlot(chx, chy, chz, i, 0, 0, 0); 
+saveChest();
 }
+clientMessage("§8[IS] §fCarrying a chest");
+chh=1;
+}
+else if(filled==false){
+ clientMessage("§8[IS] §fChest is empty."); 
+}
+}
+ else if(chh==1){ 
+ if(filled==true){
+clientMessage("§8[IS] §fYou are already carrying a chest."); 
+} 
+ else if(filled==false){
+ for(var i=0; i<27; i++){ 
+Level.setChestSlot(x, y, z, i, chest[i][0], chest[i][2], chest[i][1]); 
+ Level.playSound(x,y,z,"random.pop",1,1); 
+ } 
+clientMessage("§8[IS] §fFilled the chest."); 
+chh=0; 
+}
+}
+}
+}
+
 if(itemId==480){
 if(uses>=75){
 uses=100;
@@ -608,6 +684,10 @@ ModPE.showTipMessage("§8[IS] §fItemizer charged at "+uses+" % .");
  hminutes=minutes-(num1*60);
  days=parseInt(num1/24);
  hoursd=parseInt(hours-(days*24));
+ bs=blocks.toString();
+ bsl=bs.length;
+ ms=mobs.toString();
+ msl=ms.length;
  if(option_td){
 		ctx.runOnUiThread(new java.lang.Runnable({
 			run: function() {
@@ -628,7 +708,7 @@ ModPE.showTipMessage("§8[IS] §fItemizer charged at "+uses+" % .");
 	} 
  if(t<=0){
  if(uses<=99){
- uses=uses+1;
+ uses++;
  ModPE.showTipMessage("§8[IS] §fCharged to "+uses+" % .");
  t=1200;
  }
@@ -680,8 +760,8 @@ if(getCarriedItem()==479){
  
 Player.addItemInventory(383,1, (Entity.getEntityTypeId(victim) ));
 Level.playSound(x,y,z,"random.pop",1,1);
- uses=uses-1;
- mobs=mobs+1;
+ uses--;
+ mobs++;
 ModPE.showTipMessage("§8[IS] §f"+uses+" % charge left."); 
 Entity.remove(victim);
 
@@ -696,4 +776,98 @@ clientMessage("§8[IS] §fSomething is wrong! Go to the debug menu and select It
 }
 }
 
+ function checkChest(){
+ for(var i = 0; i < 27; i++) {
+ if(Level.getChestSlot(chx, chy ,chz,i)==0){
+ emptyI++;
+ }
+ }
+ if(emptyI==27){
+ filled=false; 
+ emptyI=0;
+ }
+ else if(emptyI!=27){
+ filled=true; 
+ emptyI=0;
+ }
+ }
+ 
+function rstats(){
+ for(var i=0; i<bsl; i++){
+			 if(bs.charAt(i)=="1"){
+			 bco++;
+			 }
+			 else if(bs.charAt(i)=="0"){
+			 bcz++;
+			 }
+			 }
+			 if(bco==(bsl-1)||bco==bsl){
+			 blocks=bco;
+			 clientMessage("§8[IS] §fDebugged itemized blocks"); 
+			 }
+			 
+			 for(var h=0; h<msl; h++){
+			 if(ms.charAt(i)=="1"){
+			 mco++;
+			 }
+			 else if(ms.charAt(i)=="0"){
+			 mcz++;
+			 }
+			 }
+			 if(mco==(msl-1)||mco==msl){
+			 mobs=mco;
+			 clientMessage("§8[IS] §fDebugged itemized mobs"); 
+			 } 
+}
+
+
+ function saveChest() {
+        var file = new java.io.File( android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/games/com.mojang/deadCraftWorlds/"+Level.getWorldDir()+"/Itemizer/", "Itemizer.txt");
+        var path=android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/games/com.mojang/deadCraftWorlds/"+Level.getWorldDir()+"/Itemizer/"; 
+  java.io.File(path).mkdirs(); 
+        file.createNewFile();
+        var write = new java.io.OutputStreamWriter(new java.io.FileOutputStream(file));
+        var string = "";
+        for(var i in chest) if(chest[i][0] !== undefined && chest[i][1] !== undefined && chest[i][2] !== undefined) string += chest[i][0].toString() + "~" + chest[i][1].toString() + "~" + chest[i][2].toString() + "|";
+        write.append(string);
+        write.append(","+ chh.toString());
+        write.append(","+ blocks.toString()); 
+        write.append(","+ mobs.toString()); 
+        write.append(","+ uses.toString()); 
+        write.append(","+ t.toString()); 
+        write.close();
+    } 
+
+function loadChest(){
+ var line, string = "";
+    var file = new java.io.File( android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/games/com.mojang/deadCraftWorlds/"+Level.getWorldDir()+"/Itemizer/", "Itemizer.txt");
+    var path=android.os.Environment.getExternalStorageDirectory().getAbsolutePath()+"/games/com.mojang/deadCraftWorlds/"+Level.getWorldDir()+"/Itemizer/"; 
+    if(!file.exists()){
+  java.io.File(path).mkdirs(); 
+    }
+    else { 
+    var readfile = new java.io.BufferedReader(new java.io.FileReader(file));
+    while((line = readfile.readLine()) != null) {
+        var t1 = line + java.lang.System.getProperty("line.seperator");
+        string += t1.substring(0, t1.length - 4);
+        var t2 = line;
+        if((line = readfile.readLine()) != null) string += "\n";
+        line = t2;
+    }
+    var chestSlots= string.split("|");
+    for(var i in chestSlots) {
+        var chestData = chestSlots[i].split("~");
+        if(chestData.length < 1) continue;
+        chest[i] = [chestData[0], chestData[1], chestData[2]];
+    }
+    chh= parseInt(string.split(",")[1]);
+    blocks= parseInt(string.split(",")[2]);
+    mobs= parseInt(string.split(",")[3]);
+    uses= parseInt(string.split(",")[4]);
+    t= parseInt(string.split(",")[5]); 
+    
+     }
+    }
+
+ 
  
